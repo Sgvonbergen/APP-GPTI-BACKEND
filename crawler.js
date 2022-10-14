@@ -5,23 +5,25 @@ const { Client } = require('pg');
 
 async function run(){
 
-    // const client = new Client({
-    //     user: 'postgres',
-    //     host: 'localhost',
-    //     database: 'GPTI',
-    //     password: '45thelentia',
-    //     port: 5432,
-    // })
+
+    var client;
     if (typeof client == 'undefined') {
-        const client = new Client({
+        client = new Client({
             connectionString: process.env.DATABASE_URL,
             ssl: {
                 rejectUnauthorized: false
             }
         })
+        // client = await new Client({
+        //     user: 'postgres',
+        //     host: 'localhost',
+        //     database: 'GPTI',
+        //     password: '45thelentia',
+        //     port: 5432,
+        // })
     }
-
-    client.connect()
+    await client.connect()
+    if (true) {
 
 
     // First, we must launch a browser instance
@@ -79,9 +81,10 @@ async function run(){
         }
     })
     // close everything
-    await client.close();
+    await client.end();
     await page.close();
     await browser.close();
+}
 }
 
 run();

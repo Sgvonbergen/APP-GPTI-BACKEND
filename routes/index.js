@@ -2,26 +2,6 @@ var express = require('express');
 var router = express.Router();
 const { Client } = require('pg')
 
-// const client = new Client({
-//     host: 'localhost',
-//     user: 'postgres',
-//     database: 'GPTI',
-//     password: '45thelentia',
-//     port: 5432,
-// })
-
-function getClient() {
-    if (typeof client === 'undefined') {
-        const client = new Client({
-            connectionString: process.env.DATABASE_URL,
-            ssl: {
-                rejectUnauthorized: false
-            }
-        })
-    }
-    return client
-}
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,8 +10,23 @@ router.get('/', function(req, res, next) {
 
 /* GET JSON of available deposit options */
 router.get('/depositos', async function(req, res, next) {
-    client = getClient()
-    client.connect()
+    var client
+    if (typeof client === 'undefined') {
+        client = await new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        })
+        // client = await new Client({
+        //     user: 'postgres',
+        //     host: 'localhost',
+        //     database: 'GPTI',
+        //     password: '45thelentia',
+        //     port: 5432,
+        // })
+    }
+    await client.connect()
     query = `SELECT * FROM orders AS o
         INNER JOIN currencies AS c
         ON o.currency_id = c.currency_id
