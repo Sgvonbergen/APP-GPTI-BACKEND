@@ -55,6 +55,7 @@ async function run(){
     await client.query(`DELETE FROM orders WHERE bank_id = ${bank_id}`)
 
     result.forEach( async (row) => {
+        console.log(row)
         if (row.length > 0) {
             interest_rate = row[1].slice(2, 4)
             interest_rate_online = row[2].slice(2, 4)
