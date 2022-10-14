@@ -12,15 +12,18 @@ const { Client } = require('pg')
 
 function connectToClient() {
     console.log(typeof client)
-    if (typeof client == 'undefined') {
+    console.log(typeof client === 'undefined')
+    if (typeof client === 'undefined') {
         const client = new Client({
             connectionString: process.env.DATABASE_URL,
             ssl: {
                 rejectUnauthorized: false
             }
         })
+        client.connect()
+    } else {
+        client.connect()
     }
-    client.connect()
 }
 
 
