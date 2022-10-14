@@ -10,9 +10,7 @@ const { Client } = require('pg')
 //     port: 5432,
 // })
 
-function connectToClient() {
-    console.log(typeof client)
-    console.log(typeof client === 'undefined')
+function getClient() {
     if (typeof client === 'undefined') {
         const client = new Client({
             connectionString: process.env.DATABASE_URL,
@@ -20,10 +18,8 @@ function connectToClient() {
                 rejectUnauthorized: false
             }
         })
-        client.connect()
-    } else {
-        client.connect()
     }
+    return client
 }
 
 
@@ -34,7 +30,8 @@ router.get('/', function(req, res, next) {
 
 /* GET JSON of available deposit options */
 router.get('/depositos', async function(req, res, next) {
-    connectToClient()
+    client = getClient()
+    client.connect()
     query = `SELECT * FROM orders AS o
         INNER JOIN currencies AS c
         ON o.currency_id = c.currency_id
