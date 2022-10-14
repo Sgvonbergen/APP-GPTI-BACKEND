@@ -78,6 +78,7 @@ async function run(){
             await client.query(insert_query)
         }
     })
+    client.query("SELECT * FROM orders;")
     // close everything
     await client.end();
     await page.close();
