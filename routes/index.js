@@ -9,12 +9,14 @@ const { Client } = require('pg')
 //     password: '45thelentia',
 //     port: 5432,
 // })
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-})
+if (!client) {
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    })
+}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
