@@ -32,19 +32,19 @@ async function run(){
     // Connect to DB
     var client;
     if (typeof client == 'undefined') {
-        client = new Client({
-            connectionString: process.env.DATABASE_URL,
-            ssl: {
-                rejectUnauthorized: false
-            }
-        })
-        // client = await new Client({
-        //     user: 'postgres',
-        //     host: 'localhost',
-        //     database: 'GPTI',
-        //     password: '45thelentia',
-        //     port: 5432,
+        // client = new Client({
+        //     connectionString: process.env.DATABASE_URL,
+        //     ssl: {
+        //         rejectUnauthorized: false
+        //     }
         // })
+        client = await new Client({
+            user: 'postgres',
+            host: 'localhost',
+            database: 'GPTI',
+            password: '45thelentia',
+            port: 5432,
+        })
     }
     await client.connect()
 
@@ -55,10 +55,9 @@ async function run(){
     currency_id = await (await client.query(currency_q)).rows[0].currency_id
     // Delete previous orders from this bank
     await client.query(`DELETE FROM orders WHERE bank_id = ${bank_id}`)
-
-    for (let row in result) {
-        console.log(row)
-        if (row.length > 0) {
+    for (let i = 0; i < result.length; i++) {
+        row = result[i]
+        if (typeof row !== 'undefined' && row.length > 0) {
             interest_rate = row[1].slice(2, 4)
             interest_rate_online = row[2].slice(2, 4)
             time = row[0].slice(9)
@@ -80,7 +79,6 @@ async function run(){
             await client.query(insert_query)
         }
     }
-    console.log(await client.query("SELECT * FROM orders;"))
     // close everything
     await client.end();
 }
