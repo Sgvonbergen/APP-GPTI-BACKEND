@@ -32,19 +32,19 @@ async function run(){
     // Connect to DB
     var client;
     if (typeof client == 'undefined') {
-        // client = new Client({
-        //     connectionString: process.env.DATABASE_URL,
-        //     ssl: {
-        //         rejectUnauthorized: false
-        //     }
-        // })
-        client = await new Client({
-            user: 'postgres',
-            host: 'localhost',
-            database: 'GPTI',
-            password: '45thelentia',
-            port: 5432,
+        client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
         })
+        // client = await new Client({
+        //     user: 'postgres',
+        //     host: 'localhost',
+        //     database: 'GPTI',
+        //     password: '45thelentia',
+        //     port: 5432,
+        // })
     }
     await client.connect()
 
