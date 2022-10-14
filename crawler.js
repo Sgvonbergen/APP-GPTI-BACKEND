@@ -56,6 +56,7 @@ async function run(){
     // Delete previous orders from this bank
     await client.query(`DELETE FROM orders WHERE bank_id = ${bank_id}`)
 
+    console.log(result)
     for (row in result) {
         console.log(row)
         if (row.length > 0) {
