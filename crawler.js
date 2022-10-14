@@ -6,12 +6,18 @@ const { Client } = require('pg');
 async function run(){
 
     const client = new Client({
-        user: 'dbuser',
-        host: 'database.server.com',
-        database: 'mydb',
-        password: 'secretpassword',
-        port: 3211,
+        user: 'postgres',
+        host: 'localhost',
+        database: 'GPTI',
+        password: '45thelentia',
+        port: 5432,
     })
+    // const client = new Client({
+    //     connectionString: process.env.DATABASE_URL,
+    //     ssl: {
+    //         rejectUnauthorized: false
+    //     }
+    // })
     client.connect()
 
 
