@@ -56,8 +56,7 @@ async function run(){
     // Delete previous orders from this bank
     await client.query(`DELETE FROM orders WHERE bank_id = ${bank_id}`)
 
-    console.log(result)
-    for (row in result) {
+    for (let row in result) {
         console.log(row)
         if (row.length > 0) {
             interest_rate = row[1].slice(2, 4)
