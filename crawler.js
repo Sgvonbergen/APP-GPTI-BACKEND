@@ -12,12 +12,15 @@ async function run(){
     //     password: '45thelentia',
     //     port: 5432,
     // })
-    const client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        }
-    })
+    if (typeof client == 'undefined') {
+        const client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        })
+    }
+
     client.connect()
 
 

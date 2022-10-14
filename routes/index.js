@@ -9,7 +9,7 @@ const { Client } = require('pg')
 //     password: '45thelentia',
 //     port: 5432,
 // })
-if (!client) {
+if (typeof client == 'undefined') {
     const client = new Client({
         connectionString: process.env.DATABASE_URL,
         ssl: {
