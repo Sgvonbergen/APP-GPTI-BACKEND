@@ -5,27 +5,7 @@ const { Client } = require('pg');
 
 async function run(){
 
-
-    var client;
-    if (typeof client == 'undefined') {
-        client = new Client({
-            connectionString: process.env.DATABASE_URL,
-            ssl: {
-                rejectUnauthorized: false
-            }
-        })
-        // client = await new Client({
-        //     user: 'postgres',
-        //     host: 'localhost',
-        //     database: 'GPTI',
-        //     password: '45thelentia',
-        //     port: 5432,
-        // })
-    }
-    await client.connect()
-    if (true) {
-
-
+    // Banco Estado Crawl
     // First, we must launch a browser instance
     const browser = await puppeteer.launch({
         headless: true,
@@ -46,16 +26,37 @@ async function run(){
             return Array.from(columns, column => column.innerText);
         });
     });
+    await page.close();
+    await browser.close();
 
+    // Connect to DB
+    var client;
+    if (typeof client == 'undefined') {
+        client = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        })
+        // client = await new Client({
+        //     user: 'postgres',
+        //     host: 'localhost',
+        //     database: 'GPTI',
+        //     password: '45thelentia',
+        //     port: 5432,
+        // })
+    }
+    await client.connect()
+
+    // Insert Banco Estado Data
     bank_q = "SELECT bank_id FROM banks WHERE bank_name = 'Banco Estado';"
     bank_id = await (await client.query(bank_q)).rows[0].bank_id
     currency_q = "SELECT currency_id FROM currencies WHERE currency_name = 'CLP';"
     currency_id = await (await client.query(currency_q)).rows[0].currency_id
-    // DELETE DATA FROM BANCO ESTADO
+    // Delete previous orders from this bank
     await client.query(`DELETE FROM orders WHERE bank_id = ${bank_id}`)
 
-    result.forEach( async (row) => {
-        console.log(row)
+    for (row in result) {
         if (row.length > 0) {
             interest_rate = row[1].slice(2, 4)
             interest_rate_online = row[2].slice(2, 4)
@@ -77,13 +78,11 @@ async function run(){
             `
             await client.query(insert_query)
         }
-    })
+    }
+
     client.query("SELECT * FROM orders;")
     // close everything
     await client.end();
-    await page.close();
-    await browser.close();
-}
 }
 
 run();
