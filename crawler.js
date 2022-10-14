@@ -33,6 +33,7 @@ async function run(){
     })
     // then we need to start a browser tab
     let page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
     // and tell it to go to some URL
     await page.goto('https://www.bancoestado.cl/bancoestado/simulaciones/depositoplazo/DepPlazoTasas.asp', {
         waitUntil: 'domcontentloaded',
