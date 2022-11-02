@@ -80,7 +80,7 @@ async function crawlBancoConsorcio(browser) {
         waitUntil: 'domcontentloaded',
     })
     await page.waitForSelector('div.nice-select')
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     const data = []
     let dat;
     let lists = await page.$$('div.nice-select')
@@ -92,7 +92,7 @@ async function crawlBancoConsorcio(browser) {
     let list = await lists[3].$('ul.list')
     let option = await list.$('li[data-value="1"]')
     await option.click()
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
 
     // Select currency
